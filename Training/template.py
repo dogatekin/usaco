@@ -12,5 +12,6 @@ with open("{problem}.in") as fin:
 
 
 
+out = None
 with open("{problem}.out", "w") as fout:
     fout.write(f"{{out}}\\n")''')
