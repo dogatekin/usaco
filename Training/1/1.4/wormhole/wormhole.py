@@ -3,17 +3,18 @@ ID: dotekin1
 LANG: PYTHON3
 TASK: wormhole
 """
-def all_pairs(lst):
-    if len(lst) < 2:
-        yield []
-        return
+def gen_pairings(xs):
+    if len(xs) == 2:
+        return [[(xs[0], xs[1])]]
     
-    a = lst[0]
-    for i in range(1,len(lst)):
-        pair = (a,lst[i])
-        for rest in all_pairs(lst[1:i]+lst[i+1:]):
-            yield [pair] + rest
-  
+    pairings = []
+    for i in range(1, len(xs)):
+        pair = (xs[0], xs[i])
+        for rest in gen_pairings(xs[1:i] + xs[i+1:]):
+            pairings.append([pair] + rest)
+    
+    return pairings
+ 
 def check_loop(wormholes, portals, start):
     next_wormhole = start
     
@@ -33,7 +34,7 @@ with open("wormhole.in") as fin:
 wormholes = [tuple(map(int, line.split())) for line in lines]
 
 out = 0
-for pairing in all_pairs(wormholes):
+for pairing in gen_pairings(wormholes):
     portals = {}
 
     for a, b in pairing:
